@@ -4,36 +4,36 @@
 .text
 	j main
 	
-	fatorial:
+	factorial:
 		li $s1, 1
 		li $s2, 0
 		for:
-		beq $s2, $s0, continua
+		beq $s2, $s0, continue
 			mul $s3, $s1, $s2
 			add $s1, $s1, $s3
 			addi $s2, $s2, 1
 		j for
-		continua:
+		continue:
 			jr $ra
 			
 	bubbleSort:
 		move $t2, $sp # $t2 recebe o topo da minha pilha
 		li $t1, 1 # j = 1 -> vai rodar até eu ter certeza que todos os números foram comparados
-		loopAteSemTroca:
+		loopTillNoChanges:
 			beq $t1, $t0, endBubbleSort # se analisou todos os números
 			
-			loopDeComparacao:
+			loopComparation:
 				
 				lw $t3, 0($t2) # valor do topo
 				lw $t4, 4($t2) # segundo valor do topo: como se fosse i + 1
 				ble $t3, $t4, noSwap # se valor do topo for menor ou igual ao próximo valor, não precisa trocar
 					sw $t3, 4($t2)
 					sw $t4, 0($t2)
-			j loopDeComparacao 
+			j loopComparation 
 			noSwap:
 				addi $t2, $t2, 4 # atual = atual + 1
 				addi $t1, $t1, 1
-				j loopAteSemTroca
+				j loopTillNoChanges
 	endBubbleSort:
 		addi $t5, $t5, 1
 		blt $t5, $t0, bubbleSort
@@ -58,7 +58,7 @@
 					syscall
 					move $s0, $v0
 				bltz $s0, whileValue #só fatorial maior ou igual a zero
-			jal fatorial
+			jal factorial
 			move $v0, $s1
 			
 			sw $s1, 0($sp) #armazena valor na stack
